@@ -26,8 +26,13 @@ def login():
             return error_response("Invalid credentials",401)
         
         verify_password = UserService.verify_password(password,user.password)
-        token = create_access_token(identity=user.id)
-        user.token = token
+        token = create_access_token(
+                identity=str(user.id),
+                additional_claims={
+                    "email": user.email,
+                }
+)
+
         return success_response({
             "username":user.username,
             "user_id": user.id,

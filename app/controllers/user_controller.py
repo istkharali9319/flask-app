@@ -38,6 +38,7 @@ def create_user():
     except ValueError as exc:
         return error_response(str(exc),400)
         # return jsonify({"error": str(exc),"payload":payload}), 400
+        
 @jwt_required()
 def update_user(id):
     try:

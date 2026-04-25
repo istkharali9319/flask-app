@@ -9,6 +9,7 @@ from app.routes.user_routes import user_bp
 from app.routes.profile_routes import profile_bp
 # from app.routes.category_routes import category_bp
 from app.routes.auth_routes import auth_bp
+from app.routes.role_routes import role_bp
 
 
 def create_app():
@@ -22,10 +23,12 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(profile_bp)
     app.register_blueprint(user_bp)
+    app.register_blueprint(role_bp)
     register_error_handlers(app)
 
     # Import models for migrations
     from app.models.user import User
+    from app.models.role import Role
 
     @app.get("/")
     def index():

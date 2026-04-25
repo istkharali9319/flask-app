@@ -1,4 +1,4 @@
-from app.extenstions import db
+from app.extensions import db
 
 class Role(db.Model):
     __tablename__ = "roles"
@@ -8,6 +8,11 @@ class Role(db.Model):
     # relationship with users
     users = db.relationship("User",back_populates='role')
 
-
-def __repr__(self):
+    def __repr__(self):
         return f"<Role {self.name}>"
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+        }
