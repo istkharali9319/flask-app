@@ -7,10 +7,9 @@ from app.errors.handlers import register_error_handlers
 from app.extensions import db, migrate, jwt
 from app.routes.user_routes import user_bp
 from app.routes.profile_routes import profile_bp
-# from app.routes.category_routes import category_bp
 from app.routes.auth_routes import auth_bp
 from app.routes.role_routes import role_bp
-
+from app.routes.conversation_routes import conversation_bp
 
 def create_app():
     app = Flask(__name__)
@@ -24,11 +23,14 @@ def create_app():
     app.register_blueprint(profile_bp)
     app.register_blueprint(user_bp)
     app.register_blueprint(role_bp)
+    app.register_blueprint(conversation_bp)
     register_error_handlers(app)
 
     # Import models for migrations
     from app.models.user import User
     from app.models.role import Role
+    from app.models.conversation import Conversation
+    from app.models.message import Message
 
     @app.get("/")
     def index():

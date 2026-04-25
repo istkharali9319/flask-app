@@ -14,6 +14,6 @@ class Config:
     # JWT settings
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "jwt-secret-key")
     # Access token expiry
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=2)
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=2)
     #  Refresh token expiry
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=7)
