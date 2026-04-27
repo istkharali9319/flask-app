@@ -8,7 +8,6 @@ class ConversationService:
     def save_conversation(user_message,ai_response,conversation_id,user_id):
         # save conversation if conversation_id is not present
         if not conversation_id:
-            print("Incomimh request")
             conversation = Conversation(
                 title = user_message,
                 user_id = user_id

@@ -24,7 +24,7 @@ def create_conversation():
     if errors:
         return error_response("Validation Failed!",422,errors)
     try:
-        ai_response = AiService.generate_response(user_message)
+        ai_response = AiService.call_openai_api(user_message)
         conversation_id = payload.get("conversation_id") or None
         conversation = ConversationService.save_conversation(
             user_message,
