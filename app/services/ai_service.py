@@ -10,9 +10,10 @@ client = OpenAI(api_key=api_key)
 use_open_ai = os.getenv("USE_OPEN_AI")
 google_api_key = os.getenv("GOOGLE_API_KEY")
 gemini_base_url = os.getenv("GEMINI_BASE_URL")
+ollama_base_url = os.getenv("OLLAMA_BASE_URL")
+ollama = OpenAI(base_url = ollama_base_url, api_key = 'ollama')
 
-
-# ✅ Keep static response outside
+# Keep static response outside
 STATIC_AI_RESPONSE = """Hi there! How can I help you today?
 
 I can assist with:
@@ -31,8 +32,14 @@ class AiService:
     @staticmethod
     def generate_response(user_message):
 
+        # integrate the Ollama 
+        return ollama_ai(user_message)
+
+        # If use_open_ai is True → OpenAI model will be used
+        # If use_open_ai is False → Gemini model will be used
+
         if not use_open_ai:
-           return call_gemini_ai(user_message)
+           return gemini_ai(user_message)
 
         messages = [
             {"role": "user", "content": user_message}
@@ -69,10 +76,10 @@ class AiService:
             headers = headers,
             json= payload
         )
-        
+
         return response.json()['choices'][0]['message']['content']
     
-    def call_gemini_ai(user_message):
+    def gemini_ai(user_message):
         gemini = OpenAI(base_url=gemini_base_url, api_key=google_api_key)
         response = gemini.chat.completions.create(
             model="gemini-2.5-flash-lite", 
@@ -81,4 +88,10 @@ class AiService:
                     "content": user_message
                 }])
         return response.choices[0].message.content
-        
+    
+    def ollama_ai(user_message):
+        response = ollama.chat.completions.create(
+            model="llama3.2",
+            messages=[{"role": "user", "content": user_message}])
+
+        return response.choices[0].message.content
