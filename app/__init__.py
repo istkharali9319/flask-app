@@ -1,7 +1,7 @@
 import time
 
 from flask import Flask, jsonify
-
+from flask_cors import CORS
 from app.config import Config
 from app.errors.handlers import register_error_handlers
 from app.extensions import db, migrate, jwt
@@ -10,6 +10,7 @@ from app.routes.profile_routes import profile_bp
 from app.routes.auth_routes import auth_bp
 from app.routes.role_routes import role_bp
 from app.routes.conversation_routes import conversation_bp
+from app.routes.brochure_routes import brochure_bp
 
 def create_app():
     app = Flask(__name__)
@@ -19,11 +20,18 @@ def create_app():
     migrate.init_app(app, db)
     jwt.init_app(app)
 
+    CORS(app, resources={
+        r"/api/*": {
+            "origins": ["http://localhost:5173","http://localhost:5174"]  # React app
+        }
+    }, supports_credentials=True)
+
     app.register_blueprint(auth_bp)
     app.register_blueprint(profile_bp)
     app.register_blueprint(user_bp)
     app.register_blueprint(role_bp)
     app.register_blueprint(conversation_bp)
+    app.register_blueprint(brochure_bp)
     register_error_handlers(app)
 
     # Import models for migrations
@@ -39,7 +47,15 @@ def create_app():
                 "message": "Istkhar Ali profile API is running",
                 "service": "portfolio api",
                 "role": "Senior Full Stack Engineer",
-                "endpoints": ["/", "/health", "/api/profile/", "/api/users/", "/api/auth/login"],
+                "endpoints": [
+                    "/",
+                    "/health",
+                    "/api/profile/",
+                    "/api/users/",
+                    "/api/auth/login",
+                    "/sales-company-brochure",
+                    "/api/brochure/generate",
+                ],
             }
         )
 

@@ -17,5 +17,6 @@ class Message(db.Model):
             "id": self.id,
             "conversation_id": self.conversation_id,
             "role": self.role,
-            "content":self.content
+            "content":self.content,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
         }

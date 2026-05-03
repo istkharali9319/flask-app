@@ -23,7 +23,7 @@ def login():
 
         user =  AuthService.login(email,password)
         if not user:
-            return error_response("Invalid credentials",401)
+            return error_response("Invalid credentials",403)
         
         verify_password = UserService.verify_password(password,user.password)
         token = create_access_token(
